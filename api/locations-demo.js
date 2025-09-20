@@ -1,6 +1,11 @@
 import { parse } from 'csv-parse/sync'; // lightweight CSV parser
 
 export default function handler(req, res) {
+ // Set CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*'); // allow any origin
+  res.setHeader('Access-Control-Allow-Methods', 'GET');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  
   try {
     // 1. Read Base64 CSV from environment variable
     const base64Csv = process.env.LOCATIONS_BASE64;
