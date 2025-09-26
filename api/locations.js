@@ -3,13 +3,14 @@ export default async function handler(req, res) {
   const BASE_ID = "appfUboy1dpaUpbKE";
   const TABLE_NAME = "Members of the PNW Fiber Economy";
   const VIEW_NAME = "Mappable Only";
-
+  
+  // Set CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*'); // allow any origin
+  res.setHeader('Access-Control-Allow-Methods', 'GET');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  
   const headers = {
-    Authorization: `Bearer ${process.env.AIRTABLE_MAP_TOKEN}`,
-    // Set CORS headers
-    'Access-Control-Allow-Origin': '*', // allow any origin
-    'Access-Control-Allow-Methods': 'GET',
-    'Access-Control-Allow-Headers': 'Content-Type'
+    Authorization: `Bearer ${process.env.AIRTABLE_MAP_TOKEN}`
   };
 
   const allRecords = [];
