@@ -6,6 +6,10 @@ export default async function handler(req, res) {
 
   const headers = {
     Authorization: `Bearer ${process.env.AIRTABLE_MAP_TOKEN}`,
+    // Set CORS headers
+    'Access-Control-Allow-Origin': '*', // allow any origin
+    'Access-Control-Allow-Methods': 'GET',
+    'Access-Control-Allow-Headers': 'Content-Type'
   };
 
   const allRecords = [];
