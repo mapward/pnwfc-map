@@ -1,11 +1,11 @@
 // /api/locations.js
 export default async function handler(req, res) {
-  const BASE_ID = "app1234567890";     // Replace with your Base ID
-  const TABLE_NAME = "Customers";      // Replace with your table name
-  const VIEW_NAME = "Grid view";       // Replace with your view name
+  const BASE_ID = "appfUboy1dpaUpbKE";
+  const TABLE_NAME = "Members of the PNW Fiber Economy";
+  const VIEW_NAME = "Mappable Only";
 
   const headers = {
-    Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
+    Authorization: `Bearer ${process.env.AIRTABLE_MAP_TOKEN}`,
   };
 
   const allRecords = [];
