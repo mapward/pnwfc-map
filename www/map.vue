@@ -17,14 +17,14 @@
 			:class="{ show: location, hide: !isInfoWindowVisible }">
 			<div class="map-overlay-border">
 				<svg class="border-svg">
-					<rect
+<!-- 					<rect
 						x="10" y="10"
 						width="96%" height="96%"
 						fill="none" stroke="currentColor"
 						stroke-width="4"
 						stroke-dasharray="20 12.36"
 						vector-effect="non-scaling-stroke" />
-				</svg>
+ -->				</svg>
 				<div v-if="location" class="map-overlay-inner">
 					<!-- X close button from HeroIcons -->
 					<svg
@@ -310,8 +310,8 @@ function loadMap(data) {
    font-size: normal;
    line-height: 1.5;
    font-family: Barlow, sans-serif;
-   padding: 3ex;
-   padding-top: 2ex;
+   padding: 3rex;
+   padding-top: 0.7rem;
 
    position: absolute;
    right: 0;
@@ -323,6 +323,12 @@ function loadMap(data) {
    transition: transform 0.4s ease, opacity 0.4s ease;
 
    z-index: 5;
+}
+
+.map-overlay {
+	border: double 10px rgb(72, 101, 72);
+	border-top: 0;
+	border-right: 0;
 }
 
 .map-overlay.show {
