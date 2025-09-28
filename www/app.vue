@@ -28,28 +28,74 @@
 					</div>
 
 					<section style="margin-top: 1.5rem">
-						<h3>Products</h3>
-						<div>{{ products }}</div>
+						<template v-if="isMember">
+							<template v-if="producerType && isProducer()">
+								<h3>Producer Type</h3>
+								<div>{{ producerType }}</div>
+							</template>
 
-						<template v-if="producerType">
-							<h3>Producer Type</h3>
-							<div>{{ producerType }}</div>
-						</template>
+							<template v-if="profileUrl">
+								<h3>
+									<a :href="profileUrl" target="_blank">
+										Member Profile
+									</a>
+								</h3>
+							</template>
+							
+							<template v-if="socialUrl">
+								<h3>Social Media</h3>
+								<div>
+									<a :href="socialUrl" target="_blank">
+										{{ socialUrl }}
+									</a>
+								</div>
+							</template>
+							
+							<template v-if="sell">
+								<h3>Available Products</h3>
+								<div>{{ sell }}</div>
+							</template>
+													
+							<template v-if="education">
+								<h3>Educational Opportunities</h3>
+								<div>{{ education }}</div>
+							</template>
+							
+							<template v-if="classUrl">
+								<h3>Classes</h3>
+								<div>
+									<a :href="classUrl" target="_blank">{{ classUrl }}</a>
+								</div>
+							</template>
 
-						<template v-if="sourcing">
-							<h3>Sourcing Information</h3>
-							<div>{{ sourcing }}</div>
-						</template>
-					</section>
+							<template v-if="retailType">
+								<h3>Retailer Type</h3>
+								<div>{{ retailType }}</div>
+							</template>
 
-					<section>
+							<template v-if="learningType">
+								<h3>Learning Type</h3>
+								<div>{{ learningType }}</div>
+							</template>
+
+							<template v-if="producerType">
+								<h3>Producer Type</h3>
+								<div>{{ producerType }}</div>
+							</template>
+							
+							<template v-if="products">
+								<h3>Products</h3>
+								<div>{{ products }}</div>
+							</template>
+								
+							<template v-if="sourcing">
+								<h3>Sourcing Information</h3>
+								<div>{{ sourcing }}</div>
+							</template>
+						</template>			
+						
 						<h3>Location</h3>
 						<div>{{ address }}</div>
-					</section>
-
-					<section v-if="phone">
-						<h3>Contact</h3>
-						<div>{{ phone }}</div>
 					</section>
 				</div>
 			</div>
@@ -67,22 +113,48 @@ const isDev = false;
 const location = ref();
 const isInfoWindowVisible = ref(false);
 
+function filterView(viewType) {
+	return x => x.properties["Map Views"] === viewType 
+		&& x.properties["Approved for Map? (Internal Only)"] === "Approved";
+}
+
 const sources = reactive({
-	locations: {
-		id: "locations",
-		label: "Locations",
-		icon: "clothing-store",
+	producers: {
+		id: "producers",
+		label: "Producers",
+		icon: "farm",
 		isVisible: true,
-		filter: () => true
+		filter: filterView("Producers")
 	},
-	mills: {
-		id: "mills",
-		label: "Mills",
+	artisans: {
+		id: "artisans",
+		label: "Artisans",
 		icon: "ranger-station",
+		isVisible: true,
+		filter: filterView("Artisans")
+	},
+	retailers: {
+		id: "retailers",
+		label: "Retailers",
+		icon: "clothing-store",
 		isVisible: true,
 		// function that returns true if a location is included
 		// in the source
-		filter: x => x.properties["Fiber Processing Mill"] === "checked"
+		filter: filterView("Retailers")
+	},
+	processors: {
+		id: "processors",
+		label: "Processors",
+		icon: "doctor",
+		isVisible: true,
+		filter: filterView("Processors")
+	},
+	schools: {
+		id: "schools",
+		label: "Learning",
+		icon: "library", 
+		isVisible: true,
+		filter: filterView("Learning")
 	}
 });
 
@@ -94,15 +166,36 @@ function prop(propName) {
 	return location?.value?.properties[propName];
 }
 
+function isProducer() {
+	return prop("Map Views") === "Producer";
+}
+
+function isRetailer() {
+	return prop("Map Views") === "Retailers";
+}
+		
+function parseList(x) {
+	return JSON.parse(prop(x) || "[]").join("; ");
+}
+
 const name = computed(() => prop("Business Name") || prop("Name"));
 // phone: computed(() => prop("Business Phone"))
 const phone = "(555) 753-1234";
 const website = computed(() => prop("Business/Organization Website"));
 const address = computed(() => prop("Business/Organization Address"));
-const products = computed(() => prop("Product and/or Service Type(s)"));
-const producerType = computed(() => prop("Producer Type"));
-const isMill = computed(() => prop("Fiber Processing Mill") === "checked");
-const sourcing = computed(() => prop("Product Sourcing Information"));
+const products = computed(() => parseList("Product and/or Service Type(s)"));
+const sourcing = computed(() => parseList("Product Sourcing Information"));
+
+const isMember = computed(() => prop("Membership Status") === "Active");
+const profileUrl = computed(() => prop("Link to PNWFC Member Profile"));
+const socialUrl = computed(() => prop("Link/s to social media"));
+const sell = computed(() => prop("What do they sell?"));
+const education = computed(() => prop("Educational Opportunities (Tours, courses, internships, etc.)"));
+const classUrl = computed(() => prop("Link to Classes"));
+const retailType = computed(() => parseList("Retailer Type"));
+const learningType = computed(() => prop("Learning Type"));
+const producerType = computed(() => parseList("Producer Type"));
+
 
 onMounted(() => {
 	// Mapbox stuff
@@ -116,7 +209,7 @@ onMounted(() => {
 	});
 
 	map.addControl(
-		new mapboxgl.NavigationControl({ showCompass: false }),
+		new mapboxgl.NavigationControl({ showCompass: true }),
 		"top-left"
 	);
 
@@ -169,7 +262,7 @@ onMounted(() => {
 				layout: {
 					"text-field": "{Name}",
 					"text-size": 16,
-					"text-offset": [0, 3.8],
+					"text-offset": [0, 0],
 					"text-anchor": "bottom",
 					"icon-image": "",
 					"icon-optional": true
@@ -326,12 +419,13 @@ onMounted(() => {
 
 	async function getData() {
 		const res = await fetch(
-			"https://pnwfc-api-vercel.vercel.app/api/locations-demo"
+			"https://pnwfc-api-vercel.vercel.app/api/locations"
 		);
 		if (!res.ok) {
 			throw new Error(`Request failed: ${res.status}`);
 		}
 		return await res.json(); // parse JSON body
 	}
+
 });
 </script>
