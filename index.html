@@ -1,5 +1,20 @@
 <!doctype html>
 <html lang="en">
-	<div id="wool-map-app"></div>
-	<script type="module" src="/www/index.js"></script>
+	<head>
+		<script src="https://api.mapbox.com/mapbox-gl-js/v3.15.0/mapbox-gl.js"></script>
+		<link href="https://api.mapbox.com/mapbox-gl-js/v3.15.0/mapbox-gl.css" rel="stylesheet">
+		<link href="/www/style.css" rel="stylesheet">
+	</head>
+	<body>
+		<!-- 
+			coming soon: vue app
+			<div id="wool-map-app">
+			</div>
+		-->
+
+		<div id="map" style="height:500px;"></div>
+		<div class="map-overlay right" id="info-window"></div>
+
+		<script type="module" src="/www/index.js"></script>
+	</body>
 </html>

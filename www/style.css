@@ -1,0 +1,14 @@
+.map-overlay {
+   display: none;
+   font: 12px/20px sans-serif;
+   position: absolute;
+   right: 0;
+   top: 0;
+   width: 300px;
+}
+
+.map-overlay-inner {
+   background: #fff;
+   padding: 10px;
+   border-radius: 3px;
+}

@@ -1,9 +1,7 @@
 <template>
-	<div>Hello {{ world }}</div>
+	<div>
+   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue';
-
-const world = ref('World');
+<script>
 </script>
