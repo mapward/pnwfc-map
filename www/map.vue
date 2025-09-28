@@ -300,3 +300,67 @@ onMounted(() => {
 	}
 });
 </script>
+
+<style>
+.map-overlay {
+   background-color: rgb(231, 209, 181);
+   color: rgb(72, 101, 72);
+
+   font-size: normal;
+   line-height: 1.5;
+   font-family: Barlow, sans-serif;
+   padding: 3ex;
+   padding-top: 2ex;
+
+   position: absolute;
+   right: 0;
+   top: 0;
+   width: 60rex;
+
+   transform: translateX(100%);
+   opacity: 0;
+   transition: transform 0.4s ease, opacity 0.4s ease;
+
+   z-index: 5;
+}
+
+.map-overlay.show {
+   opacity: 1;
+   transform: translateX(0);
+}
+.map-overlay.hide {
+   transform: translateX(100%);
+   opacity: 0;
+}
+.map-overlay-inner {
+   padding: 10px;
+   border-radius: 3px;
+}
+
+.map-overlay #close-btn {
+   position: absolute;
+   right: 0;
+   top: 0;
+   margin: 2rex;
+   width: 4rex;
+   cursor: pointer;
+}
+
+.map-overlay .border-svg {
+   color: rgb(241, 166, 56);
+   color: rgb(72, 101, 72);
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   pointer-events: none; /* allows clicks through */
+}
+
+#layer-select-overlay {
+   font-family: Barlow, sans-serif;
+   position: absolute;
+   left: 10px;
+   bottom: 50px;
+}
+</style>

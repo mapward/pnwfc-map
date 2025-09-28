@@ -176,3 +176,23 @@ function parseList(x) {
 	return JSON.parse(prop(x) || "[]").join("; ");
 }
 </script>
+
+<style scoped>
+h2 {
+   color: black;
+   font-size: 1.5rem;
+   font-family: "Donegal One", serif;
+   font-weight: normal;
+   margin-top: 0;
+   margin-bottom: 0.1rem;
+}
+
+h3 {
+   font-size: 1.25rem;
+   margin-bottom: 0.1rem;
+}
+
+a {
+   color: black;
+}
+</style>
