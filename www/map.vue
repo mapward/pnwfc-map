@@ -53,7 +53,8 @@ import { onMounted, ref, watchEffect } from 'vue';
 
 const props = defineProps({
 	isDev: { type: Boolean, default: false },
-	sources: Object
+	sources: Object,
+	getData: Function,
 });
 
 const emit = defineEmits(['select-location']);
@@ -82,7 +83,7 @@ onMounted(() => {
 	);
 
 	map.on("style.load", async () => {
-		const data = await getData();
+		const data = await props.getData();
 		const geoJson = toGeoJson(data);
 
 		const center = getCenter(data);
@@ -287,16 +288,6 @@ onMounted(() => {
 		];
 
 		return center;
-	}
-
-	async function getData() {
-		const res = await fetch(
-			"https://pnwfc-api-vercel.vercel.app/api/locations"
-		);
-		if (!res.ok) {
-			throw new Error(`Request failed: ${res.status}`);
-		}
-		return await res.json(); // parse JSON body
 	}
 });
 </script>
