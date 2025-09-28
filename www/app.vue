@@ -1,6 +1,16 @@
 <template>
 	<div>
 		<div id="map" style="height:600px;"></div>
+
+		<div v-cloak id="layer-select-overlay">
+			<div v-for="source in sources">
+				<label>
+					<input type="checkbox" v-model="source.isVisible"/>
+					{{ source.label }}
+				</label>			
+			</div>
+		</div>
+
 		<div v-cloak class="map-overlay right" :class="{ show: location, hide: !isInfoWindowVisible }">
 			<div class="map-overlay-border">
 				<svg class="border-svg">
@@ -49,13 +59,32 @@
 
 <script setup>
 // Vue app
-import { createApp, computed, onMounted, ref } from "vue";
+import { createApp, computed, onMounted, reactive, ref, watchEffect } from "vue";
 
 // set this to true for easier development
 // here and there
 const isDev = false;
 const location = ref();
 const isInfoWindowVisible = ref(false);
+
+const sources = reactive({
+	locations: {
+		id: "locations",
+		label: "Locations",
+		icon: "clothing-store",
+		isVisible: true,
+		filter: () => true
+	},
+	mills: {
+		id: "mills",
+		label: "Mills",
+		icon: "ranger-station",
+		isVisible: true,
+		// function that returns true if a location is included
+		// in the source
+		filter: x => x.properties["Fiber Processing Mill"] === "checked"
+	}
+});
 
 function hideInfoWindow() {
 	isInfoWindowVisible.value = false;
@@ -105,58 +134,91 @@ onMounted(() => {
 			selectFeature({ feature: geoJson.features[25] });
 		}
 
-		map.addSource("locations", { type: "geojson", data: geoJson });
-
-		// Icon layer
-		map.addLayer({
-			id: "locations",
-			type: "symbol",
-			source: "locations",
-			layout: {
-				"icon-image": "clothing-store", // built-in maki icon
-				"icon-size": 1.2,
-				"icon-anchor": "top",
-				"icon-allow-overlap": true
-			}
+		Object.values(sources).forEach(source => {
+			map.addSource(source.id, { type: "geojson", data: {
+				...geoJson,
+				features: geoJson.features.filter(source.filter)
+			}})
 		});
 
-		// Text layer
-		map.addLayer({
-			id: "location-names",
-			type: "symbol",
-			source: "locations",
-			minzoom: 10, // text only appears at zoom 10+
-			layout: {
-				"text-field": "{Name}",
-				"text-size": 16,
-				"text-offset": [0, 3.8],
-				"text-anchor": "bottom",
-				"icon-image": "",
-				"icon-optional": true
-			},
-			paint: {
-				"text-color": "black",
-				"text-halo-color": whenFeatureState({
-					prop: "selected",
-					whenTrue: "pink",
-					whenFalse: "white"
-				}),
-				"text-halo-width": 1.5
-			}
+		Object.values(sources).forEach(source => {
+			map.addLayer(getIconLayer(source.id, source.icon));
+			map.addLayer(getTextLayer(source.id));
 		});
 
-		// Clicking on a feature will highlight it and display its properties in the info window
-		map.addInteraction("click-icons", {
-			type: "click",
-			target: { layerId: "locations" },
-			handler: selectFeature
-		});
+		function getIconLayer(source, image) {
+			return {
+				id: `${source}-icons`,
+				type: "symbol",
+				source: source,
+				layout: {
+					"icon-image": image,
+					"icon-size": 1.2,
+					"icon-anchor": "top",
+					"icon-allow-overlap": true
+				}
+			};
+		}
 
-		map.addInteraction("click-text", {
-			type: "click",
-			target: { layerId: "location-names" },
-			handler: selectFeature
-		});
+		function getTextLayer(source) {
+			return {
+				id: `${source}-names`,
+				type: "symbol",
+				source: source,
+				minzoom: 10, // text only appears at zoom 10+
+				layout: {
+					"text-field": "{Name}",
+					"text-size": 16,
+					"text-offset": [0, 3.8],
+					"text-anchor": "bottom",
+					"icon-image": "",
+					"icon-optional": true
+				},
+				paint: {
+					"text-color": "black",
+					"text-halo-color": whenFeatureState({
+						prop: "selected",
+						whenTrue: "pink",
+						whenFalse: "white"
+					}),
+					"text-halo-width": 1.5
+				}
+			};
+		}
+
+		Object.values(sources)
+			// each source has two layers: icons and text
+			.flatMap((source) => [`${source.id}-icons`, `${source.id}-names`])
+			.forEach((layer) => {
+				// Clicking on a feature will highlight it and display
+				// its properties in the info window
+				map.addInteraction(`click-${layer}`, {
+					type: "click",
+					target: { layerId: layer },
+					handler: selectFeature
+				});
+			
+				// Hovering over a feature will highlight it
+				map.addInteraction(`mouseenter-${layer}`, {
+					type: "mouseenter",
+					target: { layerId: layer },
+					handler: ({ feature }) => {
+						map.setFeatureState(feature, { highlight: true });
+						map.getCanvas().style.cursor = "pointer";
+					}
+				});
+
+				// Moving the mouse away from a feature will remove the highlight
+				map.addInteraction(`mouseleave-${layer}`, {
+					type: "mouseleave",
+					target: { layerId: layer },
+					handler: ({ feature }) => {
+						map.setFeatureState(feature, { highlight: false });
+						map.getCanvas().style.cursor = "";
+						return false;
+					}
+				});
+			});
 
 		function selectFeature({ feature }) {
 			if (location.value) {
@@ -168,31 +230,31 @@ onMounted(() => {
 			map.setFeatureState(feature, { selected: true });
 		}
 
+		// React to changes in the selected sources
+		watchEffect(() => {
+			function getVisibility(b) {
+				return b ? "visible" : "none";
+			}
+
+			Object.values(sources).forEach(x => {			
+				map.setLayoutProperty(
+					`${x.id}-names`,
+					"visibility",
+					getVisibility(x.isVisible)
+				);
+
+				map.setLayoutProperty(
+					`${x.id}-icons`,
+					"visibility",
+					getVisibility(x.isVisible)
+				);			
+			});
+		});
+
 		// Clicking on the map will deselect the selected feature
 		map.addInteraction("map-click", {
 			type: "click",
 			handler: hideInfoWindow
-		});
-
-		// Hovering over a feature will highlight it
-		map.addInteraction("mouseenter", {
-			type: "mouseenter",
-			target: { layerId: "locations" },
-			handler: ({ feature }) => {
-				map.setFeatureState(feature, { highlight: true });
-				map.getCanvas().style.cursor = "pointer";
-			}
-		});
-
-		// Moving the mouse away from a feature will remove the highlight
-		map.addInteraction("mouseleave", {
-			type: "mouseleave",
-			target: { layerId: "locations" },
-			handler: ({ feature }) => {
-				map.setFeatureState(feature, { highlight: false });
-				map.getCanvas().style.cursor = "";
-				return false;
-			}
 		});
 	});
 
@@ -271,6 +333,5 @@ onMounted(() => {
 		}
 		return await res.json(); // parse JSON body
 	}
-
 });
 </script>
