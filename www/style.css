@@ -1,14 +1,80 @@
+body {
+   margin: 0;
+}
+
+.map-overlay h2 {
+   color: black;
+   font-size: 1.5rem;
+   font-family: "Donegal One", serif;
+   font-weight: normal;
+   margin-top: 0;
+   margin-bottom: 0.1rem;
+}
+
+.map-overlay h3 {
+   font-size: 1.25rem;
+   margin-bottom: 0.1rem;
+}
+
+.map-overlay a {
+   color: black;
+}
+
 .map-overlay {
-   display: none;
-   font: 12px/20px sans-serif;
+   background-color: #f0dfcb;
+   color: #477b4d;
+
+   font-size: normal;
+   line-height: 1.5;
+   font-family: Barlow, sans-serif;
+   padding: 3ex;
+   padding-top: 2ex;
+
    position: absolute;
    right: 0;
    top: 0;
-   width: 300px;
+   width: 60rex;
+
+   transform: translateX(100%);
+   opacity: 0;
+   transition: transform 0.4s ease, opacity 0.4s ease;
+
+   z-index: 5;
 }
 
+.map-overlay.show {
+   opacity: 1;
+   transform: translateX(0);
+}
+.map-overlay.hide {
+   transform: translateX(100%);
+   opacity: 0;
+}
 .map-overlay-inner {
-   background: #fff;
    padding: 10px;
    border-radius: 3px;
+}
+
+.map-overlay #close-btn {
+   position: absolute;
+   right: 0;
+   top: 0;
+   margin: 2rex;
+   width: 4rex;
+   cursor: pointer;
+}
+
+.map-overlay .border-svg {
+   color: #477b4d;
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   pointer-events: none; /* allows clicks through */
+}
+
+/* vue will uncloak things when it is ready */
+[v-cloak] {
+   display: none;
 }
