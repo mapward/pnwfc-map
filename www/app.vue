@@ -1,7 +1,7 @@
 <template>
 	<Map
 		:isDev
-		:getData
+		:data
 		:sources
 		@select-location="selected => location = selected"
 	>
@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 
 import Map from './map.vue';
 import LocationInfo from './locationInfo.vue';
@@ -18,6 +18,7 @@ import LocationInfo from './locationInfo.vue';
 // set this to true for easier development
 // here and there
 const isDev = false;
+const data = ref(); 
 const location = ref();
 
 const sources = reactive({
@@ -26,6 +27,8 @@ const sources = reactive({
 		label: "Producers",
 		icon: "farm",
 		isVisible: true,
+		// function that returns true if a location is included
+		// in the source
 		filter: filterView("Producers")
 	},
 	artisans: {
@@ -40,8 +43,6 @@ const sources = reactive({
 		label: "Retailers",
 		icon: "clothing-store",
 		isVisible: true,
-		// function that returns true if a location is included
-		// in the source
 		filter: filterView("Retailers")
 	},
 	processors: {
@@ -65,13 +66,13 @@ function filterView(viewType) {
       && x.properties["Approved for Map? (Internal Only)"] === "Approved";
 }
 
-async function getData() {
-	const res = await fetch(
-		"https://pnwfc-api-vercel.vercel.app/api/locations"
-	);
+onMounted(async () => {
+	const res = await fetch("https://pnwfc-api-vercel.vercel.app/api/locations");
+
 	if (!res.ok) {
 		throw new Error(`Request failed: ${res.status}`);
 	}
-	return await res.json(); // parse JSON body
-}
+
+	data.value = await res.json();
+});
 </script>

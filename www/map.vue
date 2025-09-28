@@ -49,12 +49,12 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watchEffect } from 'vue';
+import { onMounted, ref, watch, watchEffect } from 'vue';
 
 const props = defineProps({
 	isDev: { type: Boolean, default: false },
-	sources: Object,
-	getData: Function,
+	data: Object,
+	sources: Object
 });
 
 const emit = defineEmits(['select-location']);
@@ -66,7 +66,18 @@ function hideInfoWindow() {
 	isInfoWindowVisible.value = false;
 }
 
+// Wait for mounted before calling the mapbox stuff
+// because it needs the DOM to be loaded. Then
+// wait for the data prop to come in.
 onMounted(() => {
+	watch(() => props.data, value => {
+		if (value) {
+			loadMap(value);
+		}
+	}, { immediate: true });	
+});
+
+function loadMap(data) {
 	// Mapbox stuff
 	const map = new mapboxgl.Map({
 		container: "map",
@@ -83,7 +94,6 @@ onMounted(() => {
 	);
 
 	map.on("style.load", async () => {
-		const data = await props.getData();
 		const geoJson = toGeoJson(data);
 
 		const center = getCenter(data);
@@ -289,7 +299,7 @@ onMounted(() => {
 
 		return center;
 	}
-});
+}
 </script>
 
 <style>
