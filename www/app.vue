@@ -29,7 +29,7 @@ const sources = reactive({
 		isVisible: true,
 		// function that returns true if a location is included
 		// in the source
-		filter: filterView("Producers")
+		filter: filterView("Producer")
 	},
 	artisans: {
 		id: "artisans",
