@@ -407,7 +407,12 @@ function loadMap(data) {
 
 #layer-select-overlay {
 	background: white;
+	background-color: rgb(231, 209, 181);
+	color: rgb(72, 101, 72);
+
+	border: rgb(72, 101, 72) solid 1px;
 	border-radius: 5px;
+
 	padding: 1.75rex;
 	padding-right: 2.5rex;
 
