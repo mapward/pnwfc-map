@@ -64,7 +64,7 @@ import { onMounted, ref, watch, watchEffect } from 'vue';
 
 const props = defineProps({
 	isDev: { type: Boolean, default: false },
-	data: Object,
+	geoJson: Object,
 	sources: Object
 });
 
@@ -81,16 +81,16 @@ function hideInfoWindow() {
 
 // Wait for mounted before calling the mapbox stuff
 // because it needs the DOM to be loaded. Then
-// wait for the data prop to come in.
+// wait for the geoJson prop to come in.
 onMounted(() => {
-	watch(() => props.data, value => {
+	watch(() => props.geoJson, value => {
 		if (value) {
 			loadMap(value);
 		}
 	}, { immediate: true });	
 });
 
-function loadMap(data) {
+function loadMap(geoJson) {
 	// Mapbox stuff
 	const map = new mapboxgl.Map({
 		container: "map",
@@ -107,9 +107,7 @@ function loadMap(data) {
 	);
 
 	map.on("style.load", async () => {
-		const geoJson = toGeoJson(data);
-
-		const center = getCenter(data);
+		const center = getCenter(geoJson);
 		if (!props.isDev) {
 			map.setCenter(center);
 		}
@@ -293,27 +291,12 @@ function loadMap(data) {
 		];
 	}
 
-	function toGeoJson(records) {
-		return {
-			type: "FeatureCollection",
-			features: records.map((x, index) => ({
-				id: index,
-				type: "Feature",
-				geometry: {
-					type: "Point",
-					coordinates: [parseFloat(x.Longitude), parseFloat(x.Latitude)]
-				},
-				properties: { ...x }
-			}))
-		};
-	}
-
 	// get the center of all the data points
-	function getCenter(data) {
-		const bounds = data.reduce(
+	function getCenter(geoJson) {
+		const bounds = geoJson.features.reduce(
 			(result, val) => {
-				const lng = parseFloat(val.Longitude);
-				const lat = parseFloat(val.Latitude);
+				const lng = parseFloat(val.geometry.coordinates[0]);
+				const lat = parseFloat(val.geometry.coordinates[1]);
 
 				if (lat < result.lat) {
 					result.lat = lat;

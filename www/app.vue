@@ -1,7 +1,7 @@
 <template>
 	<Map
 		:isDev
-		:data
+		:geoJson
 		:sources
 		@select-location="selected => location = selected"
 	>
@@ -14,11 +14,12 @@ import { computed, onMounted, reactive, ref } from "vue";
 
 import Map from './map.vue';
 import LocationInfo from './locationInfo.vue';
+import { getGeoJsonData } from './data.js';
 
 // set this to true for easier development
 // here and there
 const isDev = false;
-const data = ref(); 
+const geoJson = ref(); 
 const location = ref();
 
 const sources = reactive({
@@ -72,12 +73,6 @@ function filterView(viewType) {
 }
 
 onMounted(async () => {
-	const res = await fetch("https://pnwfc-api-vercel.vercel.app/api/locations");
-
-	if (!res.ok) {
-		throw new Error(`Request failed: ${res.status}`);
-	}
-
-	data.value = await res.json();
+	geoJson.value = await getGeoJsonData();
 });
 </script>
