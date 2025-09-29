@@ -1,22 +1,24 @@
 <template>
 	<div>
-		<div id="map" style="height:600px;"></div>
+		<div>
+			<div id="map" style="height:600px;"></div>
 
-		<div v-cloak id="layer-select-overlay">
-			<div>
-				<label>
-					<input
-						v-model="selectedSource"
-						type="radio" 
-						:value="all" />
-					All locations
-				</label>
-			</div>
-			<div v-for="source in props.sources">
-				<label>
-					<input type="radio" :value="source.id" v-model="selectedSource"/>
-					{{ source.label }}
-				</label>       
+			<div v-cloak id="layer-select-overlay">
+				<div>
+					<label>
+						<input
+							v-model="selectedSource"
+							type="radio" 
+							:value="all" />
+						All locations
+					</label>
+				</div>
+				<div v-for="source in props.sources">
+					<label>
+						<input type="radio" :value="source.id" v-model="selectedSource"/>
+						{{ source.label }}
+					</label>       
+				</div>
 			</div>
 		</div>
 
@@ -404,9 +406,14 @@ function loadMap(data) {
 }
 
 #layer-select-overlay {
+	background: white;
+	border-radius: 5px;
+	padding: 1.75rex;
+	padding-right: 2.5rex;
+
 	font-family: Barlow, sans-serif;
 	position: absolute;
 	left: 10px;
-	bottom: 50px;
+	top: 413px;
 }
 </style>
