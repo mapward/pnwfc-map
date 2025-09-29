@@ -137,8 +137,8 @@ function loadMap(data) {
 				source: source,
 				paint: {
 					'circle-radius': 10,
-					'circle-color': color || '#FF0000',
-					'circle-stroke-width': 2,
+					'circle-color': color || '#FF3333',
+					'circle-stroke-width': 1,
 					'circle-stroke-color': '#FFFFFF'
 				}
 			};
