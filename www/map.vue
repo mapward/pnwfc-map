@@ -3,9 +3,18 @@
 		<div id="map" style="height:600px;"></div>
 
 		<div v-cloak id="layer-select-overlay">
+			<div>
+				<label>
+					<input
+						v-model="selectedSource"
+						type="radio" 
+						:value="all" />
+					All locations
+				</label>
+			</div>
 			<div v-for="source in props.sources">
 				<label>
-					<input type="checkbox" v-model="source.isVisible"/>
+					<input type="radio" :value="source.id" v-model="selectedSource"/>
 					{{ source.label }}
 				</label>       
 			</div>
@@ -59,7 +68,9 @@ const props = defineProps({
 
 const emit = defineEmits(['select-location']);
 
+const all = "all";
 const location = ref();
+const selectedSource = ref(all);
 const isInfoWindowVisible = ref(false);
 
 function hideInfoWindow() {
@@ -150,7 +161,7 @@ function loadMap(data) {
 					"text-color": "black",
 					"text-halo-color": whenFeatureState({
 						prop: "selected",
-						whenTrue: "pink",
+						whenTrue: "#F1A638", // orange
 						whenFalse: "white"
 					}),
 					"text-halo-width": 1.5
@@ -205,6 +216,19 @@ function loadMap(data) {
 		watchEffect(() => {
 			emit('select-location', location.value);
 		});
+
+		watchEffect(() => {
+			if (selectedSource.value === all) {
+				Object.values(props.sources).forEach(x => {
+					x.isVisible = true;
+				});
+			}
+			else {
+				Object.values(props.sources).forEach(x => {
+					x.isVisible = selectedSource.value === x.id;
+				});
+			}
+		})
 
 		// React to changes in the selected sources
 		watchEffect(() => {
@@ -304,25 +328,25 @@ function loadMap(data) {
 
 <style>
 .map-overlay {
-   background-color: rgb(231, 209, 181);
-   color: rgb(72, 101, 72);
+	background-color: rgb(231, 209, 181);
+	color: rgb(72, 101, 72);
 
-   font-size: normal;
-   line-height: 1.5;
-   font-family: Barlow, sans-serif;
-   padding: 3rex;
-   padding-top: 0.7rem;
+	font-size: normal;
+	line-height: 1.5;
+	font-family: Barlow, sans-serif;
+	padding: 3rex;
+	padding-top: 0.7rem;
 
-   position: absolute;
-   right: 0;
-   top: 0;
-   width: 60rex;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 60rex;
 
-   transform: translateX(100%);
-   opacity: 0;
-   transition: transform 0.4s ease, opacity 0.4s ease;
+	transform: translateX(100%);
+	opacity: 0;
+	transition: transform 0.4s ease, opacity 0.4s ease;
 
-   z-index: 5;
+	z-index: 5;
 }
 
 .map-overlay {
@@ -332,42 +356,42 @@ function loadMap(data) {
 }
 
 .map-overlay.show {
-   opacity: 1;
-   transform: translateX(0);
+	opacity: 1;
+	transform: translateX(0);
 }
 .map-overlay.hide {
-   transform: translateX(100%);
-   opacity: 0;
+	transform: translateX(100%);
+	opacity: 0;
 }
 .map-overlay-inner {
-   padding: 10px;
-   border-radius: 3px;
+	padding: 10px;
+	border-radius: 3px;
 }
 
 .map-overlay #close-btn {
-   position: absolute;
-   right: 0;
-   top: 0;
-   margin: 2rex;
-   width: 4rex;
-   cursor: pointer;
+	position: absolute;
+	right: 0;
+	top: 0;
+	margin: 2rex;
+	width: 4rex;
+	cursor: pointer;
 }
 
 .map-overlay .border-svg {
-   color: rgb(241, 166, 56);
-   color: rgb(72, 101, 72);
-   position: absolute;
-   top: 0;
-   left: 0;
-   width: 100%;
-   height: 100%;
-   pointer-events: none; /* allows clicks through */
+	color: rgb(241, 166, 56);
+	color: rgb(72, 101, 72);
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none; /* allows clicks through */
 }
 
 #layer-select-overlay {
-   font-family: Barlow, sans-serif;
-   position: absolute;
-   left: 10px;
-   bottom: 50px;
+	font-family: Barlow, sans-serif;
+	position: absolute;
+	left: 10px;
+	bottom: 50px;
 }
 </style>
