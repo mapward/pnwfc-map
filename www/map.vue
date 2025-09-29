@@ -3,7 +3,7 @@
 		<div>
 			<div id="map" style="height:600px;"></div>
 
-			<div v-cloak id="layer-select-overlay">
+			<div v-cloak id="source-select-overlay">
 				<div>
 					<label>
 						<input
@@ -388,7 +388,7 @@ function loadMap(geoJson) {
 	pointer-events: none; /* allows clicks through */
 }
 
-#layer-select-overlay {
+#source-select-overlay {
 	background: white;
 	background-color: rgb(231, 209, 181);
 	color: rgb(72, 101, 72);
