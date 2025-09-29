@@ -26,6 +26,7 @@ const sources = reactive({
 		id: "producers",
 		label: "Producers",
 		icon: "farm",
+		color: "black",
 		isVisible: true,
 		// function that returns true if a location is included
 		// in the source
@@ -35,6 +36,7 @@ const sources = reactive({
 		id: "artisans",
 		label: "Artisans",
 		icon: "ranger-station",
+		color: "#F1A638", // orange
 		isVisible: true,
 		filter: filterView("Artisans")
 	},
@@ -42,6 +44,7 @@ const sources = reactive({
 		id: "retailers",
 		label: "Retailers",
 		icon: "clothing-store",
+		color: "#A8C5A8", // light green
 		isVisible: true,
 		filter: filterView("Retailers")
 	},
@@ -49,13 +52,15 @@ const sources = reactive({
 		id: "processors",
 		label: "Processors",
 		icon: "doctor",
+		color: "#486548", // green
 		isVisible: true,
 		filter: filterView("Processors")
 	},
 	schools: {
 		id: "schools",
 		label: "Learning",
-		icon: "library", 
+		icon: "library",
+		color: "#F7CC86", // light orange, 
 		isVisible: true,
 		filter: filterView("Learning")
 	}

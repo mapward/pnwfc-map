@@ -125,9 +125,24 @@ function loadMap(data) {
 		});
 
 		Object.values(props.sources).forEach(source => {
-			map.addLayer(getIconLayer(source.id, source.icon));
+			map.addLayer(getCircleLayer(source.id, source.color));
+			// map.addLayer(getIconLayer(source.id, source.icon));
 			map.addLayer(getTextLayer(source.id));
 		});
+
+		function getCircleLayer(source, color) {
+			return {
+				id: `${source}-circles`,
+				type: 'circle',
+				source: source,
+				paint: {
+					'circle-radius': 10,
+					'circle-color': color || '#FF0000',
+					'circle-stroke-width': 2,
+					'circle-stroke-color': '#FFFFFF'
+				}
+			};
+		}
 
 		function getIconLayer(source, image) {
 			return {
@@ -161,7 +176,7 @@ function loadMap(data) {
 					"text-color": "black",
 					"text-halo-color": whenFeatureState({
 						prop: "selected",
-						whenTrue: "#F1A638", // orange
+						whenTrue: "#F7CC86", // light orange
 						whenFalse: "white"
 					}),
 					"text-halo-width": 1.5
@@ -171,7 +186,7 @@ function loadMap(data) {
 
 		Object.values(props.sources)
 			// each source has two layers: icons and text
-			.flatMap((source) => [`${source.id}-icons`, `${source.id}-names`])
+			.flatMap((source) => [`${source.id}-circles`, `${source.id}-names`])
 			.forEach((layer) => {
 				// Clicking on a feature will highlight it and display
 				// its properties in the info window
@@ -244,7 +259,7 @@ function loadMap(data) {
 				);
 
 				map.setLayoutProperty(
-					`${x.id}-icons`,
+					`${x.id}-circles`,
 					"visibility",
 					getVisibility(x.isVisible)
 				);       
