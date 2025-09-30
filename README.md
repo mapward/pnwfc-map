@@ -9,3 +9,11 @@ Deployed to vercel via GitHub push.
  * package.json: dependencies for repo
  * vite.config.js: vite configuration
 
+### to deploy
+``` html
+ <iframe 
+    src="https://pnwfc-api-vercel.vercel.app/" 
+    width="100%" 
+    height="600" 
+  ></iframe>
+```
