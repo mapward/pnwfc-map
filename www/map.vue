@@ -10,7 +10,7 @@
 							v-model="selectedSource"
 							type="radio" 
 							:value="all" />
-						All locations
+						All
 					</label>
 				</div>
 				<div v-for="source in props.sources">
