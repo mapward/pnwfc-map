@@ -94,7 +94,7 @@ function loadMap(geoJson) {
 	// Mapbox stuff
 	const map = new mapboxgl.Map({
 		container: "map",
-		style: "mapbox://styles/mapbox/streets-v12",
+		style: "mapbox://styles/mapbox/light-v11",
 		center: [-122.8, 47.04], // overriden below via setCenter
 		zoom: props.isDev ? 10 : 5,
 		accessToken:
