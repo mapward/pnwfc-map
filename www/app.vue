@@ -68,7 +68,7 @@ const sources = reactive({
 });
 
 function filterView(viewType) {
-   return x => x.properties["Map Views"] === viewType 
+   return x => (x.properties["Map Views"] || []).includes(viewType)
       && x.properties["Approved for Map? (Internal Only)"] === "Approved";
 }
 
