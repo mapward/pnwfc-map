@@ -163,12 +163,12 @@ function loadMap(geoJson) {
 				id: `${source}-names`,
 				type: "symbol",
 				source: source,
-				minzoom: 10, // text only appears at zoom 10+
+				minzoom: 8, // text only appears at zoom 8+
 				layout: {
 					"text-field": "{Name}",
 					"text-size": 16,
 					"text-offset": [0, 0],
-					"text-anchor": "bottom",
+					"text-anchor": "bottom-left",
 					"icon-image": "",
 					"icon-optional": true
 				},
@@ -176,10 +176,10 @@ function loadMap(geoJson) {
 					"text-color": "black",
 					"text-halo-color": whenFeatureState({
 						prop: "selected",
-						whenTrue: "#F7CC86", // light orange
+						whenTrue: "#ead79d", // light tan
 						whenFalse: "white"
 					}),
-					"text-halo-width": 1.5
+					"text-halo-width": 3
 				}
 			};
 		}
