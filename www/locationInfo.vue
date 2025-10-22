@@ -7,10 +7,6 @@
 
       <section style="margin-top: 1.5rem">
          <template v-if="isMember">
-            <template v-if="producerType && isProducer()">
-               <h3>Producer Type</h3>
-               <div>{{ producerType }}</div>
-            </template>
 
             <template v-if="profileUrl">
                <h3>
@@ -30,20 +26,8 @@
             </template>
             
             <template v-if="sell">
-               <h3>Available Products</h3>
+               <h3>What do they sell?</h3>
                <div>{{ sell }}</div>
-            </template>
-                              
-            <template v-if="education">
-               <h3>Educational Opportunities</h3>
-               <div>{{ education }}</div>
-            </template>
-            
-            <template v-if="classUrl">
-               <h3>Classes</h3>
-               <div>
-                  <a :href="classUrl" target="_blank">{{ classUrl }}</a>
-               </div>
             </template>
 
             <template v-if="retailType">
@@ -61,19 +45,21 @@
                <div>{{ producerType }}</div>
             </template>
             
-            <template v-if="products">
-               <h3>Products</h3>
-               <div>{{ products }}</div>
+            <template v-if="education">
+               <h3>Educational Opportunities</h3>
+               <div>{{ education }}</div>
             </template>
-               
-            <template v-if="sourcing">
-               <h3>Sourcing Information</h3>
-               <div>{{ sourcing }}</div>
+            
+            <template v-if="classUrl">
+               <div>
+                  <a :href="classUrl" target="_blank">
+                     Link to classes
+                  </a>
+               </div>
             </template>
+
          </template>       
-         
-         <h3>Location</h3>
-         <div>{{ address }}</div>
+
       </section>
    </div>
 </template>
