@@ -35,28 +35,28 @@ const sources = reactive({
 	retailers: {
 		id: "retailers",
 		label: "Retailers",
-		color: "#A8C5A8", // light green
+		color: "black",
 		isVisible: true,
 		filter: filterView("Retailers")
 	},
 	schools: {
 		id: "schools",
 		label: "Learning",
-		color: "#F7CC86", // light orange, 
+		color: "#F1A638", // orange
 		isVisible: true,
 		filter: filterView("Learning")
 	},
 	producers: {
 		id: "producers",
 		label: "Producers",
-		color: "black",
+		color: "#A8C5A8", // light green
 		isVisible: true,
 		filter: filterView("Producer")
 	},
 	artisans: {
 		id: "artisans",
 		label: "Artisans",
-		color: "#F1A638", // orange
+		color: "#F7CC86", // light orange, 
 		isVisible: true,
 		filter: filterView("Artisans")
 	}
