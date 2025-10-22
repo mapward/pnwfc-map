@@ -2,7 +2,19 @@
    <div>
       <h2>{{ name }}</h2>
       <div>
-         <a :href="website" target="_blank">{{ website }}</a>
+         <a :href="businessUrl" target="_blank">{{ businessUrl }}</a>
+      </div>
+
+      <div>
+         <a :href="organizationUrl" target="_blank">{{ organizationUrl }}</a>
+      </div>
+
+      <div>
+         {{ phone }}
+      </div>
+
+      <div>
+         {{ email }}
       </div>
 
       <section style="margin-top: 1.5rem">
@@ -16,15 +28,22 @@
                </h3>
             </template>
             
-            <template v-if="socialUrl">
-               <h3>Social Media</h3>
+            <template v-if="facebookUrl">
                <div>
-                  <a :href="socialUrl" target="_blank">
-                     {{ socialUrl }}
+                  <a :href="facebookUrl" target="_blank">
+                     Facebook
                   </a>
                </div>
             </template>
-            
+                        
+            <template v-if="instagramUrl">
+               <div>
+                  <a :href="instagramUrl" target="_blank">
+                     Instagram
+                  </a>
+               </div>
+            </template>
+
             <template v-if="sell">
                <h3>What do they sell?</h3>
                <div>{{ sell }}</div>
@@ -72,13 +91,17 @@ const props = defineProps({
 });
 
 const name = computed(() => prop("Business Name") || prop("Name"));
-const website = computed(() => prop("Business/Organization Website"));
+const businessUrl = computed(() => prop("Business Website"));
+const organizationUrl = computed(() => prop("Organization Website"));
+const email = computed(() => prop("Public Email"));
+const phone = computed(() => prop("Public Phone"));
 const address = computed(() => prop("Business/Organization Address"));
 
 const isMember = computed(() => prop("Membership Status") === "Active");
 
 const profileUrl = computed(() => prop("Link to PNWFC Member Profile"));
-const socialUrl = computed(() => prop("Link/s to social media"));
+const facebookUrl = computed(() => prop("Link to Facebook"));
+const instagramUrl = computed(() => prop("Link to Instagram"));
 const classUrl = computed(() => prop("Link to Classes"));
 
 const sell = computed(() => prop("What do they sell?"));
