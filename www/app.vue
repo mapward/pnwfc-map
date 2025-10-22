@@ -23,6 +23,30 @@ const geoJson = ref();
 const location = ref();
 
 const sources = reactive({
+	processors: {
+		id: "processors",
+		label: "Processors",
+		icon: "doctor",
+		color: "#486548", // green
+		isVisible: true,
+		filter: filterView("Processors")
+	},
+	retailers: {
+		id: "retailers",
+		label: "Retailers",
+		icon: "clothing-store",
+		color: "#A8C5A8", // light green
+		isVisible: true,
+		filter: filterView("Retailers")
+	},
+	schools: {
+		id: "schools",
+		label: "Learning",
+		icon: "library",
+		color: "#F7CC86", // light orange, 
+		isVisible: true,
+		filter: filterView("Learning")
+	},
 	producers: {
 		id: "producers",
 		label: "Producers",
@@ -40,30 +64,6 @@ const sources = reactive({
 		color: "#F1A638", // orange
 		isVisible: true,
 		filter: filterView("Artisans")
-	},
-	retailers: {
-		id: "retailers",
-		label: "Retailers",
-		icon: "clothing-store",
-		color: "#A8C5A8", // light green
-		isVisible: true,
-		filter: filterView("Retailers")
-	},
-	processors: {
-		id: "processors",
-		label: "Processors",
-		icon: "doctor",
-		color: "#486548", // green
-		isVisible: true,
-		filter: filterView("Processors")
-	},
-	schools: {
-		id: "schools",
-		label: "Learning",
-		icon: "library",
-		color: "#F7CC86", // light orange, 
-		isVisible: true,
-		filter: filterView("Learning")
 	}
 });
 
