@@ -27,22 +27,7 @@
                   </a>
                </h3>
             </template>
-            
-            <template v-if="facebookUrl">
-               <div>
-                  <a :href="facebookUrl" target="_blank">
-                     Facebook
-                  </a>
-               </div>
-            </template>
-                        
-            <template v-if="instagramUrl">
-               <div>
-                  <a :href="instagramUrl" target="_blank">
-                     Instagram
-                  </a>
-               </div>
-            </template>
+
 
             <template v-if="sell">
                <h3>What do they sell?</h3>
@@ -70,12 +55,24 @@
             </template>
             
             <template v-if="classUrl">
-               <div>
+               <h4>
                   <a :href="classUrl" target="_blank">
                      Link to classes
                   </a>
-               </div>
+               </h4>
             </template>
+            
+            
+            <div>
+               <a v-if="facebookUrl" :href="facebookUrl" target="_blank">
+                  Facebook
+               </a>
+               &nbsp; 
+               <a v-if="instagramUrl" :href="instagramUrl" target="_blank">
+                  Instagram
+               </a>
+            </div>
+ 
 
          </template>       
 
@@ -111,7 +108,7 @@ const products = computed(() => parseList("Product and/or Service Type(s)"));
 const sourcing = computed(() => parseList("Product Sourcing Information"));
 
 const retailType = computed(() => parseList("Retailer Type"));
-const learningType = computed(() => prop("Learning Type"));
+const learningType = computed(() => parseList("Learning Type"));
 const producerType = computed(() => parseList("Producer Type"));
 
 function prop(propName) {
@@ -147,6 +144,6 @@ h3 {
 }
 
 a {
-   color: black;
+   color: rgb(72, 101, 72);
 }
 </style>
