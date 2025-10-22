@@ -136,7 +136,7 @@ function loadMap(geoJson) {
 				type: 'circle',
 				source: source,
 				paint: {
-					'circle-radius': 10,
+					'circle-radius': 8,
 					'circle-color': color || '#FF3333',
 					'circle-stroke-width': 1,
 					'circle-stroke-color': '#FFFFFF'
