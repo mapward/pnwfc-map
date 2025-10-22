@@ -18,7 +18,7 @@ import { getGeoJsonData } from './data.js';
 
 // set this to true for easier development
 // here and there
-const isDev = false;
+const isDev = true;
 const geoJson = ref(); 
 const location = ref();
 
