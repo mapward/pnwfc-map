@@ -94,7 +94,7 @@ const email = computed(() => prop("Public Email"));
 const phone = computed(() => prop("Public Phone"));
 const address = computed(() => prop("Business/Organization Address"));
 
-const isMember = computed(() => prop("Membership Status") === "Active");
+const isMember = computed(() => prop("Profile Completion Status") === "Ready: Member (Full Profile)");
 
 const profileUrl = computed(() => prop("Link to PNWFC Member Profile"));
 const facebookUrl = computed(() => prop("Link to Facebook"));
