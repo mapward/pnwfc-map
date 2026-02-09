@@ -4,12 +4,12 @@
 
       <section>
          <h3>Contact Information</h3>
-         <div>
-            <a :href="businessUrl" target="_blank">{{ businessUrl }}</a>
+         <div v-if="businessUrl">
+            <a :href="businessUrl" target="_blank">Website</a>
          </div>
 
-         <div>
-            <a :href="organizationUrl" target="_blank">{{ organizationUrl }}</a>
+         <div v-if="organizationUrl">
+            <a :href="organizationUrl" target="_blank">Website</a>
          </div>
 
          <div>
@@ -68,18 +68,27 @@
                <h3>Producer Type</h3>
                <div>{{ producerType }}</div>
             </template>
+
+            <template v-if="classUrl || shopUrl">
+               <h4>
+                  <a v-if="classUrl" :href="classUrl" target="_blank">
+                     Link to classes
+                  </a>
+                  &nbsp;
+                  <a v-if="shopUrl" :href="shopUrl" target="_blank">
+                     Link to shop
+                  </a>
+               </h4>
+            </template>
+
+            <template v-if="offerings">
+               <h3>Offerings</h3>
+               <div>{{ offerings }}</div>
+            </template>
             
             <template v-if="education">
                <h3>Educational Opportunities</h3>
                <div>{{ education }}</div>
-            </template>
-            
-            <template v-if="classUrl">
-               <h4>
-                  <a :href="classUrl" target="_blank">
-                     Link to classes
-                  </a>
-               </h4>
             </template>
 
          </template>       
@@ -107,9 +116,11 @@ const isMember = computed(() => prop("Profile Completion Status") === "Ready: Me
 const profileUrl = computed(() => prop("Link to PNWFC Member Profile"));
 const facebookUrl = computed(() => prop("Link to Facebook"));
 const instagramUrl = computed(() => prop("Link to Instagram"));
-const classUrl = computed(() => prop("Link to Classes"));
+const classUrl = computed(() => prop("Link to Classes/Workshops"));
+const shopUrl = computed(() => prop("Link to Shop/Sign-Up"));
 const googleMapsUrl = computed(() => prop("View on Google Maps"));
 
+const offerings = computed(() => prop("Offerings"));
 const sell = computed(() => prop("What do they sell?"));
 const education = computed(() => prop("Educational Opportunities (Tours, courses, internships, etc.)"));
 
