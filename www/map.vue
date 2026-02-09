@@ -342,6 +342,9 @@ function loadMap(geoJson) {
 	top: 0;
 	width: 60rex;
 
+	max-height: calc(600px - 3rex - 0.7rem);
+	overflow: scroll;
+
 	transform: translateX(100%);
 	opacity: 0;
 	transition: transform 0.4s ease, opacity 0.4s ease;
