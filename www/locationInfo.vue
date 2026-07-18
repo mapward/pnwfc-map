@@ -85,13 +85,13 @@
                <h3>Offerings</h3>
                <div>{{ offerings }}</div>
             </template>
-            
+
             <template v-if="education">
                <h3>Educational Opportunities</h3>
                <div>{{ education }}</div>
             </template>
 
-         </template>       
+         </template>
 
       </section>
    </div>
@@ -116,8 +116,8 @@ const isMember = computed(() => prop("Profile Completion Status") === "Ready: Me
 const profileUrl = computed(() => prop("Link to PNWFC Member Profile"));
 const facebookUrl = computed(() => prop("Link to Facebook"));
 const instagramUrl = computed(() => prop("Link to Instagram"));
-const classUrl = computed(() => prop("Link to Classes/Workshops"));
-const shopUrl = computed(() => prop("Link to Shop/Sign-Up"));
+const classUrl = computed(() => prop("Link to Classes"));
+const shopUrl = computed(() => prop("Link to Shop"));
 const googleMapsUrl = computed(() => prop("View on Google Maps"));
 
 const offerings = computed(() => prop("Offerings"));
@@ -142,7 +142,7 @@ function isProducer() {
 function isRetailer() {
    return prop("Map Views") === "Retailers";
 }
-      
+
 function parseList(x) {
    return JSON.parse(prop(x) || "[]").join("; ");
 }
